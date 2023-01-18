@@ -1,0 +1,7 @@
+# cPractice
+# Powered By commandf1
+# Settings config
+
+# Should api for developers be enabled?
+# WARNING: It might be some errors if you enable this.
+api-enable: false

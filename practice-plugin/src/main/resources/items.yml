@@ -1,0 +1,14 @@
+unranked-queue:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND_SWORD
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: "\xa7eUnranked Queue"
+ranked-queue:
+  ==: org.bukkit.inventory.ItemStack
+  type: IRON_SWORD
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: "\xa76Ranked Queue"

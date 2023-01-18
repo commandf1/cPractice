@@ -1,0 +1,10 @@
+name: cPractice
+authors:
+  - commandf1
+version: ${project.version}
+main: space.commandf1.practice.cPracticePlugin
+softdepend:
+  - PlaceholderAPI
+
+loadbefore:
+  - PlaceholderAPI
