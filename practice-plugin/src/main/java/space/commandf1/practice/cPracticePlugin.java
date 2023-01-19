@@ -1,12 +1,21 @@
 package space.commandf1.practice;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.util.TimeStampMode;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 import space.commandf1.capi.bukkit.BukkitPlugin;
 import space.commandf1.capi.loader.APILoader;
 import space.commandf1.capi.stats.PluginStats;
 import space.commandf1.capi.utils.NMSUtils;
 import space.commandf1.practice.api.cPractice;
+import space.commandf1.practice.listener.listener.PlayerListener;
 import space.commandf1.practice.settings.Setting;
 import space.commandf1.practice.settings.Settings;
 
@@ -18,19 +27,29 @@ public class cPracticePlugin extends BukkitPlugin {
     private static API api;
     private static Logger logger;
 
-    private static File arenasDir;
+    private static  File arenasDir;
 
     public static cPracticePlugin getInstance() {
         return instance;
     }
 
-
     public static Logger getPluginLogger() {
         return logger;
     }
 
+    public static File getArenasDir() {
+        return arenasDir;
+    }
+
+    public static API getAPI() {
+        return api;
+    }
+
     public void onSetup() {
         logger = this.getLogger();
+
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
     }
 
     public void onStart() {
@@ -53,6 +72,10 @@ public class cPracticePlugin extends BukkitPlugin {
 
         // load cAPI
         APILoader.init(this);
+
+        // setup packet-events
+        PacketEvents.getAPI().getSettings().debug(false).bStats(false).checkForUpdates(false).timeStampMode(TimeStampMode.MILLIS).readOnlyListeners(false);
+        PacketEvents.getAPI().init();
 
         // setup configs
         this.saveResource("settings.yml", false);
@@ -79,6 +102,23 @@ public class cPracticePlugin extends BukkitPlugin {
         exampleConfig.setWithoutException("example", new Arena("example", new Location(example, 0, 0, 0), new Location(example, 0, 0, 0), new Location(example, 0, 0, 0)));
          */
 
+        // clean world
+        if ((boolean) Settings.CLEAN_WORLD.getObj()) {
+            for (World world : Bukkit.getWorlds()) {
+                world.setGameRuleValue("doDayLightCycle", "false");
+                // world.setGameRuleValue("doWeatherCycle", "false");
+                // 1.8 not found
+                world.setGameRuleValue("doMobSpawning", "false");
+                world.getEntities().stream().filter(entity -> entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.ITEM_FRAME).forEach(Entity::remove);
+                world.setStorm(false);
+                world.setThundering(false);
+                world.setTime(6000L);
+            }
+        }
+
+        // register listener
+        this.getListenerManager().registerListeners(new PlayerListener());
+
         // successfully loaded
         logger.info("Plugin successfully loaded! (" + (System.currentTimeMillis() - startTime) + " ms)");
     }
@@ -86,5 +126,22 @@ public class cPracticePlugin extends BukkitPlugin {
     public void onExit() {
         instance = null;
         logger = null;
+        arenasDir = null;
+        api = null;
+
+        PacketEvents.getAPI().terminate();
+        Bukkit.getServer().getScheduler().cancelTasks(this);
+    }
+
+    public void registerPacketListeners(PacketListenerAbstract... listeners) {
+        for (PacketListenerAbstract listener : listeners) {
+            PacketEvents.getAPI().getEventManager().registerListener(listener);
+        }
+    }
+
+    public void registerIncomingPluginChannel(String str, PluginMessageListener... pluginMessageListeners) {
+        for (PluginMessageListener pluginMessageListener : pluginMessageListeners) {
+            Bukkit.getMessenger().registerIncomingPluginChannel(this, str, pluginMessageListener);
+        }
     }
 }

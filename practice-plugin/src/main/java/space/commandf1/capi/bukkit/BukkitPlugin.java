@@ -5,9 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import space.commandf1.capi.manager.managers.CommandManager;
-import space.commandf1.capi.manager.managers.ListenerManager;
 import space.commandf1.capi.manager.managers.PlayerManager;
 import space.commandf1.capi.manager.managers.PluginManager;
+import space.commandf1.practice.listener.ListenerManager;
 
 import java.io.File;
 import java.io.IOException;

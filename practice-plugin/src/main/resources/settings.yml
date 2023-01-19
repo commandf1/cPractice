@@ -4,4 +4,13 @@
 
 # Should api for developers be enabled?
 # WARNING: It might be some errors if you enable this.
+# Default: false
 api-enable: false
+
+# Clean world when the plugin successfully loaded.
+# Default: true
+clean-world: true
+
+# Disable player join/leave message
+# Default true
+no-join-leave-message: true

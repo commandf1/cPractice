@@ -19,6 +19,20 @@
             <artifactId>practice-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../libs/PlaceholderAPI-2.11.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents</artifactId>
+            <version>1.8-pre-17</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../libs/PacketEvents.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
