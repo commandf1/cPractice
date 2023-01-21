@@ -19,6 +19,7 @@
             <artifactId>practice-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
@@ -26,12 +27,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../libs/PlaceholderAPI-2.11.1.jar</systemPath>
         </dependency>
+        -->
         <dependency>
-            <groupId>com.github.retrooper</groupId>
-            <artifactId>packetevents</artifactId>
-            <version>1.8-pre-17</version>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../libs/PacketEvents.jar</systemPath>
+            <systemPath>${project.basedir}/../libs/PlaceholderAPI-2.11.1.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -73,20 +75,31 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.1-SNAPSHOT</version>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <minimizeJar>true</minimizeJar>
-                        </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

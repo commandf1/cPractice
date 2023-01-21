@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import space.commandf1.capi.bukkit.BukkitPlugin;
@@ -15,19 +16,24 @@ import space.commandf1.capi.loader.APILoader;
 import space.commandf1.capi.stats.PluginStats;
 import space.commandf1.capi.utils.NMSUtils;
 import space.commandf1.practice.api.cPractice;
-import space.commandf1.practice.listener.listener.PlayerListener;
+import space.commandf1.practice.commands.CommandMap;
+import space.commandf1.practice.joinitem.JoinItem;
+import space.commandf1.practice.listener.listeners.PlayerListener;
 import space.commandf1.practice.settings.Setting;
 import space.commandf1.practice.settings.Settings;
 
 import java.io.File;
 import java.util.logging.Logger;
 
+/*
+* 傻逼东西 爱谁写谁写
+* */
 public class cPracticePlugin extends BukkitPlugin {
     private static cPracticePlugin instance;
     private static API api;
     private static Logger logger;
 
-    private static  File arenasDir;
+    private static File arenasDir, dataDir;
 
     public static cPracticePlugin getInstance() {
         return instance;
@@ -43,6 +49,10 @@ public class cPracticePlugin extends BukkitPlugin {
 
     public static API getAPI() {
         return api;
+    }
+
+    public static File getDataDir() {
+        return dataDir;
     }
 
     public void onSetup() {
@@ -90,6 +100,7 @@ public class cPracticePlugin extends BukkitPlugin {
         // setup date
         this.mkdirs("arenas");
         arenasDir = new File(this.getDataFolder(), "arenas");
+        dataDir = new File(this.getDataFolder(), "data");
 
         /*
         // examples
@@ -118,6 +129,20 @@ public class cPracticePlugin extends BukkitPlugin {
 
         // register listener
         this.getListenerManager().registerListeners(new PlayerListener());
+
+        // register join item
+        JoinItem rankedQueueItem = new JoinItem((ItemStack) Settings.RANKED_QUEUE.getObj());
+        rankedQueueItem.setAction(event -> event.setCancelled(true));
+        rankedQueueItem.setI(0);
+        rankedQueueItem.registerListeners();
+
+        JoinItem unrankedQueueItem = new JoinItem((ItemStack) Settings.UNRANKED_QUEUE.getObj());
+        unrankedQueueItem.setAction(event -> event.setCancelled(true));
+        unrankedQueueItem.setI(1);
+        unrankedQueueItem.registerListeners();
+
+        // register commands
+        this.getCommandManager().registerCommandMap(new CommandMap(), this);
 
         // successfully loaded
         logger.info("Plugin successfully loaded! (" + (System.currentTimeMillis() - startTime) + " ms)");

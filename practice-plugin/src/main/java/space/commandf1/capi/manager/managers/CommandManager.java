@@ -30,7 +30,7 @@ public class CommandManager implements Manager {
         this.registerCommandMap(commandMap, plugin.getDescription().getName());
     }
 
-    public <T extends ICommandMap> void registerCommandMap(T commandMap, String fallbackPrefix) {
+    public void registerCommandMap(ICommandMap commandMap, String fallbackPrefix) {
         for (Method method : commandMap.getClass().getDeclaredMethods()) {
             CommandInfo commandInfo = method.getAnnotation(CommandInfo.class);
             if (commandInfo == null) {

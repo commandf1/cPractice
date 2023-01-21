@@ -1,6 +1,5 @@
 package space.commandf1.practice.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import space.commandf1.practice.cPracticePlugin;
 
@@ -16,7 +15,8 @@ public class ListenerManager {
             }
 
             if (listener.getType().equals(ListenerType.BUKKIT)) {
-                ListenerManager.getInstance().registerListeners(listener);
+                // ListenerManager.getInstance().registerListeners(listener);
+                cPracticePlugin.getInstance().registerListeners(listener);
                 continue;
             }
 
@@ -25,9 +25,7 @@ public class ListenerManager {
     }
 
     public void registerListeners(Listener... listeners) {
-        for (Listener listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, cPracticePlugin.getInstance());
-        }
+        cPracticePlugin.getInstance().registerListeners(listeners);
     }
 
     public static ListenerManager getInstance() {

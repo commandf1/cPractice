@@ -10,7 +10,9 @@ public enum Settings {
     NO_JOIN_LEAVE_MESSAGE(true, "no-join-leave-message", Setting.getSettings()),
 
     UNRANKED_QUEUE(new ItemFactory(Material.DIAMOND_SWORD, 1).setDisplayName("§eUnranked Queue").build(), "unranked-queue", Setting.getItems()), // items
-    RANKED_QUEUE(new ItemFactory(Material.IRON_SWORD, 1).setDisplayName("§6Ranked Queue").build(), "ranked-queue", Setting.getItems())
+    RANKED_QUEUE(new ItemFactory(Material.IRON_SWORD, 1).setDisplayName("§6Ranked Queue").build(), "ranked-queue", Setting.getItems()),
+
+    LOBBY(null, "lobby", Setting.getData()), // data
     ;
 
     private Object obj;

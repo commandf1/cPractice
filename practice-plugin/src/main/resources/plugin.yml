@@ -8,3 +8,8 @@ softdepend:
 
 loadbefore:
   - PlaceholderAPI
+
+# practice.commands.admin
+permissions:
+  practice.commands.admin:
+    default: not op
